@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokenpo</title>
+    <style>
+        .content{
+            display: flex;
+            width: 500px;
+            margin: 0 auto;
+        }
+        img{
+            width: 200px;
+            opacity: 0.4;
+            cursor: pointer;
+        }
+        .player1{
+            flex: 1;
+        }
+        h1{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pedra Papel Tesoura</h1>
+    <div class="win"></div>
+    <hr>
+    <div class="content">
+        <div class="player1">
+            <div><img src="rock.png" op="rock" alt="pedra"></div>
+            <div><img src="paper.png" op="paper" alt="papel"></div>
+            <div><img src="scisor.png" op="scisor" alt="tesoura"></div>
+        </div>
+        <div class="player2">
+            <div><img src="rock.png" op="rock" alt="pedra"></div>
+            <div><img src="paper.png" op="paper" alt="papel"></div>
+            <div><img src="scisor.png" op="scisor" alt="tesoura"></div>
+        </div>
+    </div>
+    <script>
+        var options = document.querySelectorAll('.player1 div>img')
+        var player2 = document.querySelectorAll('.player2 > div')
+        var ganhador = document.querySelector('.win')
+        var op = '' //validação player1
+        var enemyop = '' //validação player2
+        const clear = (x)=>{
+            if (x == 1) {
+                for (let i = 0; i < options.length; i++) {
+                    options[i].style.opacity = '0.4'
+                }
+            }else{
+                for (let i = 0; i < player2.length; i++) {
+                    player2[i].childNodes[0].style.opacity = '0.4'
+                }
+            }
+        }
+        const enemy =()=>{
+            let rand = Math.floor(Math.random() * 3)
+            for (let i = 0; i < player2.length; i++) {
+                if (i == rand) {
+                    clear(2)
+                    player2[i].childNodes[0].style.opacity = '1'
+                    enemyop = player2[i].childNodes[0].getAttribute('op')
+                }
+                
+            }
+            //alert(op+' '+enemyop) para validação do ganhador
+        }
+        const win =()=>{ //rock paper scisor 
+            if (op == enemyop) {
+                ganhador.innerHTML = '<h1>Houve um empate</h1>'
+            }else if (op == 'rock'){
+                if (enemyop == 'paper') {
+                    ganhador.innerHTML = '<h1>Você perdeu, papel embrulha pedra</h1>'
+                }else if (enemyop == 'scisor'){
+                    ganhador.innerHTML = '<h1>Você ganhou, pedra quebra tesoura</h1>'
+                }
+            }else if (op == 'paper'){
+                if (enemyop == 'scisor') {
+                    ganhador.innerHTML = '<h1>Você perdeu, tesoura corta papel</h1>'
+                }else if (enemyop == 'rock'){
+                    ganhador.innerHTML = '<h1>Você ganhou, papel embrulha pedra</h1>'
+                }
+            }else if(op == 'scisor'){
+                if (enemyop == 'rock') {
+                    ganhador.innerHTML = '<h1>Você perdeu, pedra quebra tesoura</h1>'
+                }else if (enemyop == 'paper'){
+                    ganhador.innerHTML = '<h1>Você ganhou, tesoura corta papel</h1>'
+                }
+            }else{
+                alert('invalido')
+            }
+        }
+        for (let i = 0; i < options.length; i++) {
+            options[i].addEventListener('click',(t)=>{
+                clear(1)
+                t.target.style.opacity = '1' //Para recuperar o valor clicado e não precisa ficar adicionando options[i] toda hora
+                //options[i].style.opacity = '1'//
+                op = t.target.getAttribute('op') //retorna o value do atributo
+                
+                enemy()
+                win()
+            })
+        }
+    </script>
+</body>
+</html>
